@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-no-duplicate-props */
 import React from 'react';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
@@ -83,9 +85,9 @@ const BalanceCard = ({ total, onClickReplenish, onClickWithdraw, t }) => {
 				body={txnHistory}
 			>
 				<div
-					style={{ width: 360 }}
 					className='balance-card'
 					style={{
+						width: 360,
 						backgroundImage:
 							'url("/assets/images/content/balance-card-bg.svg")',
 					}}

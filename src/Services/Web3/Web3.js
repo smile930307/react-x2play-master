@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Web3 from 'web3';
 import Constants from 'app/Constants';
 import { toast } from 'react-toastify';
@@ -154,6 +155,12 @@ const topUpCCO = async (
   updatedBal,
   refId
 ) => {
+  console.log('address', address)
+  console.log('amount', amount)
+  console.log('referrer', referrer)
+  console.log('closeModal', closeModal)
+  console.log('updatedBal', updatedBal)
+  console.log('refId', refId)
   let contract = new web3js.eth.Contract(
     Constants.EXCHANGE_ABI,
     Constants.EXCHANGE
@@ -167,6 +174,7 @@ const topUpCCO = async (
     const allowedAmnt = await tetherContract.methods
       .allowance(address, Constants.EXCHANGE)
       .call();
+    console.log('allowedAmnt',allowedAmnt)
     if (amount * 1_000_000 > parseFloat(allowedAmnt)) {
       await tetherContract.methods
         .approve(Constants.EXCHANGE, amount * 1_000_000 - allowedAmnt)
@@ -177,9 +185,10 @@ const topUpCCO = async (
         });
     }
     let ref = '0x0000000000000000000000000000000000000000';
-    if (refId.length == 42 && refId.includes('0x')) {
+    if (refId.length === 42 && refId.includes('0x')) {
       ref = refId;
     }
+    console.log('ref',ref)
     await contract.methods
       .exchangeUsdtToPlay(address, amount * 1_000_000, ref)
       .send({ from: address })
@@ -194,7 +203,9 @@ const topUpCCO = async (
         closeModal();
         toast.error(err.message);
       });
-  } catch (err) {}
+  } catch (err) {
+    console.log('[topup-> exception]',err)
+  }
 };
 
 const withdrawCCO = async (
@@ -349,7 +360,7 @@ const getGameInfo = async (setGameInfo) => {
     }
     width += 5;
     items.push({
-      type: obj == parseInt(round) ? 2 : 1,
+      type: obj === parseInt(round) ? 2 : 1,
       total: `${width}%`,
       filled:
         obj < parseInt(round)
@@ -430,7 +441,7 @@ const getTransactions = async (add, setTxnHistory) => {
   })
     .then((res) => {
       for (const ele of res.data.result) {
-        if (res.data.result.indexOf(ele) == 50) break;
+        if (res.data.result.indexOf(ele) === 50) break;
         txnHistory.push({ to: ele.to, from: ele.from });
       }
       setTxnHistory(txnHistory);
